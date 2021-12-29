@@ -2,6 +2,7 @@ import React, { ReactElement, useEffect, useState } from "react";
 import MessagesBlock from "./MessagesBlock";
 import { io } from "socket.io-client";
 import { ClientSocket } from "../../types";
+import ChatInput from "./ChatInput";
 
 export default function ChatWindow(): ReactElement {
   const [socket, setSocket] = useState<ClientSocket>();
@@ -9,6 +10,7 @@ export default function ChatWindow(): ReactElement {
   useEffect(() => {
     const newSocket: ClientSocket = io();
     newSocket.on("connect", () => {
+      console.log("connected to socket");
       setSocket(newSocket);
     });
 
@@ -20,6 +22,7 @@ export default function ChatWindow(): ReactElement {
   return (
     <div>
       <MessagesBlock socket={socket} />
+      <ChatInput socket={socket} username={"gavri"} />
     </div>
   );
 }

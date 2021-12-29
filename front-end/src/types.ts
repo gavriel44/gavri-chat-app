@@ -6,12 +6,14 @@ export interface message {
   id: string;
 }
 
+export type newMessage = Omit<message, "id">;
+
 interface ServerToClientEvents {
   receiveMessage: (message: message) => void;
 }
 
 interface ClientToServerEvents {
-  sendMessage: message;
+  sendMessage: (message: newMessage) => void;
 }
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
