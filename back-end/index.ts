@@ -10,7 +10,13 @@ const chatHandler = require("./socketHandlers/chatHandler");
 
 io.on("connection", (socket) => {
   socket.on("sendMessage", (message) => {
-    socket.broadcast.emit("sendMessage", message);
+    console.log(message);
+    const newMessage = {
+      ...message,
+      id: "3",
+    };
+
+    socket.emit("receiveMessage", newMessage);
   });
 });
 

@@ -1,5 +1,5 @@
 interface ServerToClientEvents {
-  sendMessage: (message: message) => void;
+  receiveMessage: (message: message) => void;
 }
 
 interface ClientToServerEvents {
@@ -9,6 +9,7 @@ interface ClientToServerEvents {
 interface message {
   text: string;
   username: string;
+  id: string;
 }
 
 export { ServerToClientEvents, ClientToServerEvents };
