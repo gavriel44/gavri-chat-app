@@ -3,7 +3,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-  sendMessage: (message: message) => void;
+  sendMessage: (message: message, cb: (newId: string) => void) => void;
 }
 
 interface message {

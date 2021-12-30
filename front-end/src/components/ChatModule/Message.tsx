@@ -11,7 +11,12 @@ export default function Message({ message }: Props): ReactElement {
     <div className="message">
       <div className="message-author">{userNameInitials}</div>
       <div className="message-content">
-        <p>{message.text}</p>
+        <p>
+          <span>{message.text} </span>
+          <span className="message-status">
+            {message.id === "temp" ? "sending.." : "received"}
+          </span>
+        </p>
       </div>
     </div>
   );

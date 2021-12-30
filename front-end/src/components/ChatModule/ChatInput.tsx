@@ -4,24 +4,11 @@ import { ClientSocket, newMessage } from "../../types";
 import SendIcon from "@mui/icons-material/Send";
 
 interface Props {
-  socket: ClientSocket | undefined;
-  username: string;
+  handleSubmit: (value: string) => void;
 }
 
-export default function ChatInput({ socket, username }: Props): ReactElement {
+export default function ChatInput({ handleSubmit }: Props): ReactElement {
   const [input, setInput] = useState("");
-
-  const handleSubmit = (text: string): void => {
-    if (typeof socket === "undefined") {
-      return console.log("waiting on connection");
-    }
-    const message: newMessage = {
-      text,
-      username,
-    };
-
-    socket.emit("sendMessage", message);
-  };
 
   return (
     <form className="chat-input">

@@ -13,7 +13,7 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-  sendMessage: (message: newMessage) => void;
+  sendMessage: (message: newMessage, cb: (newId: string) => void) => void;
 }
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;

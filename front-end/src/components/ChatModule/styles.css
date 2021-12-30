@@ -9,7 +9,7 @@
   height: 410px;
   border-bottom: solid 2px rgba(0, 0, 0, 0.2);
   margin-bottom: 7px;
-  padding: 10px;
+  padding: 20px 10px;
   overflow: auto;
 }
 
@@ -53,4 +53,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.message-status {
+  color: hsla(0, 0%, 100%, 0.5);
 }
