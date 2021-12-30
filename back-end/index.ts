@@ -11,10 +11,15 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
 const chatHandler = require("./socketHandlers/chatHandler");
 
 io.on("connection", (socket) => {
+  socket.on("enterRoom", (username) => {
+    socket.emit("enteredRoom", { username, type: "EnterRoomMessage" });
+  });
+
   socket.on("sendMessage", (message, cb) => {
     console.log(message);
 
     const newId = uuidv4();
+
     const newMessage = {
       ...message,
       id: newId,

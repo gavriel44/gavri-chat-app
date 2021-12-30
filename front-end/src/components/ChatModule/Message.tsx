@@ -11,17 +11,30 @@ export default function Message({ message }: Props): ReactElement {
   const userNameInitials = message.username.slice(0, 2).toLocaleUpperCase();
 
   const isMyMessage = username === message.username;
+
+  if (isMyMessage) {
+    return (
+      <div className="my-message">
+        <div className="message-author">{userNameInitials}</div>
+        <div className="message-content">
+          <p>
+            <span>{message.text} </span>
+
+            <span className="message-status">
+              {message.id === "temp" ? "sending.." : "received"}
+            </span>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={isMyMessage ? "my-message" : "message"}>
+    <div className="message">
       <div className="message-author">{userNameInitials}</div>
       <div className="message-content">
         <p>
           <span>{message.text} </span>
-          {isMyMessage ? (
-            <span className="message-status">
-              {message.id === "temp" ? "sending.." : "received"}
-            </span>
-          ) : null}
         </p>
       </div>
     </div>
