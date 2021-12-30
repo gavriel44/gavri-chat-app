@@ -3,22 +3,12 @@ import MessagesBlock from "./MessagesBlock";
 import { io } from "socket.io-client";
 import { ClientSocket, isMessage, message } from "../../types";
 import ChatInput from "./ChatInput";
+import useSocket from "../../hooks/useSocket";
 
 export default function ChatWindow(): ReactElement {
-  const [socket, setSocket] = useState<ClientSocket>();
   const [messages, setMessages] = useState<message[]>([]);
 
-  useEffect(() => {
-    const newSocket: ClientSocket = io();
-    newSocket.on("connect", () => {
-      console.log("connected to socket");
-      setSocket(newSocket);
-    });
-
-    return () => {
-      newSocket.close();
-    };
-  }, []);
+  const socket = useSocket();
 
   useEffect(() => {
     console.log(messages);
