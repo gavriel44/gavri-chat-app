@@ -4,6 +4,8 @@ import { createServer } from "http";
 const server = createServer(app);
 import { Server, Socket } from "socket.io";
 import { ClientToServerEvents, ServerToClientEvents } from "./types";
+import { v4 as uuidv4 } from "uuid";
+
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
 
 const chatHandler = require("./socketHandlers/chatHandler");
@@ -13,10 +15,10 @@ io.on("connection", (socket) => {
     console.log(message);
     const newMessage = {
       ...message,
-      id: "3",
+      id: uuidv4(),
     };
 
-    socket.emit("receiveMessage", newMessage);
+    socket.broadcast.emit("receiveMessage", newMessage);
   });
 });
 

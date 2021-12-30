@@ -1,0 +1,21 @@
+.chat-window {
+  height: 500px;
+  width: 350px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 15px 6px rgba(0, 0, 0, 0.16);
+}
+
+.message-block {
+  height: 420px;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.2);
+  margin-bottom: 7px;
+}
+
+.chat-input {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  /* border: solid black; */
+  height: 65px;
+}
