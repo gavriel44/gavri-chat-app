@@ -6,9 +6,13 @@ interface Props {
 }
 
 export default function Message({ message }: Props): ReactElement {
+  const userNameInitials = message.username.slice(0, 2).toLocaleUpperCase();
   return (
-    <div>
-      <p>text: {message.text}</p>
+    <div className="message">
+      <div className="message-author">{userNameInitials}</div>
+      <div className="message-content">
+        <p>{message.text}</p>
+      </div>
     </div>
   );
 }
