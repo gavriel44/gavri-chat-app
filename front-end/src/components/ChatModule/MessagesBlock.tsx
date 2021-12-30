@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
-import { IMessage } from "../../types";
+import { ServerToClientMessage } from "../../types";
 import Message from "./Message";
 
 interface Props {
-  messages: IMessage[];
+  messages: ServerToClientMessage[];
 }
 
 export default function MessagesBlock({ messages }: Props): ReactElement {

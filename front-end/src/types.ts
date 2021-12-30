@@ -1,6 +1,7 @@
 import { Socket } from "socket.io-client";
 
-export type IMessage = message | EnterRoomMessage;
+export type ServerToClientMessage = message | ComeInToRoomMessage;
+export type ClientToServerMessage = newMessage | EnterRoomMessage;
 
 export interface message {
   type: "message";
@@ -12,12 +13,12 @@ export interface message {
 export type newMessage = Omit<message, "id">;
 
 interface ServerToClientEvents {
-  receiveMessage: (message: IMessage) => void;
+  receiveMessage: (message: ServerToClientMessage) => void;
 }
 
 interface ClientToServerEvents {
   sendMessage: (
-    message: newMessage | EnterRoomMessage,
+    message: ClientToServerMessage,
     cb?: (newId: string) => void
   ) => void;
 }
@@ -28,9 +29,18 @@ interface EnterRoomMessage {
   roomNum: string;
 }
 
+export type ComeInToRoomMessage = EnterRoomMessage & { userId: string };
+
+export interface User {
+  username: string;
+  id: string;
+}
+
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-export const isMessage = (message: any): message is message => {
+export const isMessageFromServer = (
+  message: any
+): message is ServerToClientMessage => {
   if (!message || !message?.username) {
     return false;
   }

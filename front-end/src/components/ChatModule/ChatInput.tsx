@@ -12,14 +12,6 @@ export default function ChatInput({ handleSubmit }: Props): ReactElement {
 
   return (
     <form className="chat-input">
-      {/* <input
-          type="text"
-          name="chat-input"
-          value={input}
-          onChange={(e) => {
-            setInput(e.target.value);
-          }}
-        /> */}
       <TextField
         id="chat-input"
         label="Outlined"

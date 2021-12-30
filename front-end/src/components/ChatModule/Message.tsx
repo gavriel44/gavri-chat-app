@@ -1,9 +1,9 @@
 import React, { ReactElement, useContext } from "react";
-import { IMessage } from "../../types";
+import { ServerToClientMessage } from "../../types";
 import UsernameContext from "../UsernameContext";
 
 interface Props {
-  message: IMessage;
+  message: ServerToClientMessage;
 }
 
 export default function Message({ message }: Props): ReactElement {
@@ -13,7 +13,6 @@ export default function Message({ message }: Props): ReactElement {
   switch (message.type) {
     case "message":
       const isMyMessage = username === message.username;
-      console.log("ismy", isMyMessage);
 
       if (isMyMessage) {
         return (
@@ -24,7 +23,7 @@ export default function Message({ message }: Props): ReactElement {
                 <span>{message.text} </span>
 
                 <span className="message-status">
-                  {message.id === "temp" ? "sending.." : "received"}
+                  {message.id === "temp" ? "sending.." : "delivered"}
                 </span>
               </p>
             </div>
