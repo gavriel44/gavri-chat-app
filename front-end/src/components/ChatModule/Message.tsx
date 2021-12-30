@@ -1,21 +1,27 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import { message } from "../../types";
+import UsernameContext from "../UsernameContext";
 
 interface Props {
   message: message;
 }
 
 export default function Message({ message }: Props): ReactElement {
+  const username = useContext(UsernameContext);
   const userNameInitials = message.username.slice(0, 2).toLocaleUpperCase();
+
+  const isMyMessage = username === message.username;
   return (
-    <div className="message">
+    <div className={isMyMessage ? "my-message" : "message"}>
       <div className="message-author">{userNameInitials}</div>
       <div className="message-content">
         <p>
           <span>{message.text} </span>
-          <span className="message-status">
-            {message.id === "temp" ? "sending.." : "received"}
-          </span>
+          {isMyMessage ? (
+            <span className="message-status">
+              {message.id === "temp" ? "sending.." : "received"}
+            </span>
+          ) : null}
         </p>
       </div>
     </div>
