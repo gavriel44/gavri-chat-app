@@ -1,6 +1,9 @@
 import { Socket } from "socket.io-client";
 
+export type IMessage = message | EnterRoomMessage;
+
 export interface message {
+  type: "message";
   text: string;
   username: string;
   id: string;
@@ -9,18 +12,27 @@ export interface message {
 export type newMessage = Omit<message, "id">;
 
 interface ServerToClientEvents {
-  receiveMessage: (message: message) => void;
+  receiveMessage: (message: IMessage) => void;
 }
 
 interface ClientToServerEvents {
-  sendMessage: (message: newMessage, cb: (newId: string) => void) => void;
+  sendMessage: (
+    message: newMessage | EnterRoomMessage,
+    cb?: (newId: string) => void
+  ) => void;
+}
+
+interface EnterRoomMessage {
+  type: "EnterRoomMessage";
+  username: string;
+  roomNum: number;
 }
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
-export const isMessage = (data: any): data is message => {
-  if (!data || typeof data?.text !== "string" || typeof data?.id !== "string") {
-    throw new Error("message missing of invalid format");
+export const isMessage = (message: any): message is message => {
+  if (!message || !message?.username) {
+    return false;
   }
   return true;
 };

@@ -1,12 +1,12 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import MessagesBlock from "./MessagesBlock";
-import { isMessage, message } from "../../types";
+import { isMessage, IMessage, message } from "../../types";
 import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
 import UsernameContext from "../UsernameContext";
 
 export default function ChatWindow(): ReactElement {
-  const [messages, setMessages] = useState<message[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
   const username = useContext(UsernameContext);
 
   const socket = useSocket();
@@ -27,6 +27,12 @@ export default function ChatWindow(): ReactElement {
     }
 
     socket.on("receiveMessage", messagesListener);
+
+    socket.emit("sendMessage", {
+      type: "EnterRoomMessage",
+      username,
+      roomNum: 1,
+    });
   }, [socket]);
 
   const handleSendMessage = (text: string): void => {
@@ -37,6 +43,7 @@ export default function ChatWindow(): ReactElement {
       text,
       username,
       id: "temp",
+      type: "message",
     };
     setMessages((prev) => {
       const newMessages = prev.concat([message]);
@@ -48,7 +55,7 @@ export default function ChatWindow(): ReactElement {
         console.log("in callback", messages);
         setMessages((prevMessages) => {
           const newMessage = prevMessages.map((mes) => {
-            if (mes.id === "temp") {
+            if (mes.type === "message" && mes.id === "temp") {
               mes.id = newId;
             }
             return mes;

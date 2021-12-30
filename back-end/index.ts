@@ -5,29 +5,38 @@ const server = createServer(app);
 import { Server, Socket } from "socket.io";
 import { ClientToServerEvents, ServerToClientEvents } from "./types";
 import { v4 as uuidv4 } from "uuid";
+import rooms from "./db/rooms";
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
 
-const chatHandler = require("./socketHandlers/chatHandler");
+// const chatHandler = require("./socketHandlers/chatHandler");
 
 io.on("connection", (socket) => {
-  socket.on("enterRoom", (username) => {
-    socket.emit("enteredRoom", { username, type: "EnterRoomMessage" });
-  });
+  let roomNum = "1";
 
   socket.on("sendMessage", (message, cb) => {
+    switch (message.type) {
+      case "EnterRoomMessage":
+        roomNum = String(message.roomNum);
+        socket.join(roomNum);
+        socket.to(roomNum).emit("receiveMessage", message);
+        break;
+      case "message":
+        const newId = uuidv4();
+
+        const newMessage = {
+          ...message,
+          id: newId,
+        };
+
+        cb(newId);
+
+        socket.to(roomNum).emit("receiveMessage", newMessage);
+        break;
+      default:
+        break;
+    }
     console.log(message);
-
-    const newId = uuidv4();
-
-    const newMessage = {
-      ...message,
-      id: newId,
-    };
-
-    cb(newId);
-
-    socket.broadcast.emit("receiveMessage", newMessage);
   });
 });
 

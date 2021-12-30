@@ -1,12 +1,12 @@
 interface ServerToClientEvents {
-  receiveMessage: (message: message) => void;
-  enteredRoom: (username: EnterRoomMessage) => void;
+  receiveMessage: (message: message | EnterRoomMessage) => void;
 }
 
 interface ClientToServerEvents {
-  sendMessage: (message: message, cb: (newId: string) => void) => void;
-  enterRoom: (message: string) => void;
+  sendMessage: (message: Message, cb?: (newId: string) => void) => void;
 }
+
+type Message = message | EnterRoomMessage;
 
 interface message {
   text: string;
@@ -17,7 +17,14 @@ interface message {
 
 interface EnterRoomMessage {
   username: string;
+  roomNum: Number;
   type: "EnterRoomMessage";
 }
 
-export { ServerToClientEvents, ClientToServerEvents };
+interface Rooms {
+  [key: string]: room;
+}
+
+type room = String[];
+
+export { ServerToClientEvents, ClientToServerEvents, Rooms };
