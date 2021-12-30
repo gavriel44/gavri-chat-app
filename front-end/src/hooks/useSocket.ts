@@ -15,7 +15,7 @@ const useSocket = (url?: string): ClientSocket | undefined => {
     return () => {
       newSocket.close();
     };
-  }, []);
+  }, [url]);
 
   return socket;
 };

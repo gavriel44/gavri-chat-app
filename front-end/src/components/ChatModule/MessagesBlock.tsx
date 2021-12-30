@@ -1,7 +1,6 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { message, ClientSocket, IMessage } from "../../types";
+import React, { ReactElement } from "react";
+import { IMessage } from "../../types";
 import Message from "./Message";
-import { isMessage } from "../../types";
 
 interface Props {
   messages: IMessage[];

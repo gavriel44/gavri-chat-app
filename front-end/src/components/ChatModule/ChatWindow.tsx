@@ -7,7 +7,7 @@ import UsernameContext from "../UsernameContext";
 
 export default function ChatWindow(): ReactElement {
   const [messages, setMessages] = useState<IMessage[]>([]);
-  const username = useContext(UsernameContext);
+  const { username, room } = useContext(UsernameContext);
 
   const socket = useSocket();
 
@@ -31,7 +31,7 @@ export default function ChatWindow(): ReactElement {
     socket.emit("sendMessage", {
       type: "EnterRoomMessage",
       username,
-      roomNum: 1,
+      roomNum: room,
     });
   }, [socket]);
 

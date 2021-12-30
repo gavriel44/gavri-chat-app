@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { IMessage, message } from "../../types";
+import { IMessage } from "../../types";
 import UsernameContext from "../UsernameContext";
 
 interface Props {
@@ -7,12 +7,13 @@ interface Props {
 }
 
 export default function Message({ message }: Props): ReactElement {
-  const username = useContext(UsernameContext);
+  const { username } = useContext(UsernameContext);
   const userNameInitials = message.username.slice(0, 2).toLocaleUpperCase();
 
   switch (message.type) {
     case "message":
       const isMyMessage = username === message.username;
+      console.log("ismy", isMyMessage);
 
       if (isMyMessage) {
         return (
@@ -50,6 +51,5 @@ export default function Message({ message }: Props): ReactElement {
 
     default:
       return <p>error</p>;
-      break;
   }
 }

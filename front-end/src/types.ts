@@ -25,7 +25,7 @@ interface ClientToServerEvents {
 interface EnterRoomMessage {
   type: "EnterRoomMessage";
   username: string;
-  roomNum: number;
+  roomNum: string;
 }
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
