@@ -1,12 +1,13 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import MessagesBlock from "./MessagesBlock";
-import { io } from "socket.io-client";
-import { ClientSocket, isMessage, message, newMessage } from "../../types";
+import { isMessage, message } from "../../types";
 import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
+import UsernameContext from "../UsernameContext";
 
 export default function ChatWindow(): ReactElement {
   const [messages, setMessages] = useState<message[]>([]);
+  const username = useContext(UsernameContext);
 
   const socket = useSocket();
 
@@ -28,8 +29,6 @@ export default function ChatWindow(): ReactElement {
     socket.on("receiveMessage", messagesListener);
   }, [socket]);
 
-  const username = "gavri";
-
   const handleSendMessage = (text: string): void => {
     if (typeof socket === "undefined") {
       return console.log("waiting on connection");
@@ -48,11 +47,11 @@ export default function ChatWindow(): ReactElement {
       setTimeout(() => {
         console.log("in callback", messages);
         setMessages((prevMessages) => {
-          const newMessage = prevMessages.map((m) => {
-            if (m.id === "temp") {
-              m.id = newId;
+          const newMessage = prevMessages.map((mes) => {
+            if (mes.id === "temp") {
+              mes.id = newId;
             }
-            return m;
+            return mes;
           });
           return newMessage;
         });
