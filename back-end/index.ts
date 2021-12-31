@@ -9,7 +9,7 @@ import chatHandler from "./socketHandlers/chatHandler";
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
 
 const onConnection = (socket: Socket) => {
-  chatHandler(socket);
+  chatHandler(socket, io);
 };
 
 io.on("connection", onConnection);
