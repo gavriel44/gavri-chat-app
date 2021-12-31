@@ -2,10 +2,14 @@ import React, { ReactElement } from "react";
 import ChatWindow from "./ChatWindow";
 import "./styles.css";
 
-export default function ChatModule(): ReactElement {
+interface Props {
+  url?: string;
+}
+
+export default function ChatModule({ url }: Props): ReactElement {
   return (
     <div>
-      <ChatWindow />
+      <ChatWindow url={url} />
     </div>
   );
 }

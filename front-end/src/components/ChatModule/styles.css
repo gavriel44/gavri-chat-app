@@ -67,3 +67,18 @@
   align-self: flex-end;
   margin-bottom: 10px;
 }
+
+.connected-window {
+  height: 500px;
+  width: 230px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 15px 6px rgba(0, 0, 0, 0.16);
+  padding: 20px 10px;
+  overflow: auto;
+}
+
+.chat-module {
+  display: flex;
+  justify-content: space-between;
+  width: 615px;
+}

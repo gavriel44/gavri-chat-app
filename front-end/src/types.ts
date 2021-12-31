@@ -1,7 +1,13 @@
 import { Socket } from "socket.io-client";
 
-export type ServerToClientMessage = message | ComeInToRoomMessage;
-export type ClientToServerMessage = newMessage | EnterRoomMessage;
+export type ServerToClientMessage =
+  | message
+  | ComeInToRoomMessage
+  | PrivateMessage;
+export type ClientToServerMessage =
+  | newMessage
+  | EnterRoomMessage
+  | PrivateMessage;
 
 export interface message {
   type: "message";
@@ -14,7 +20,10 @@ export type newMessage = Omit<message, "id">;
 
 interface ServerToClientEvents {
   receiveMessage: (message: ServerToClientMessage) => void;
+  updateUsersInRoom: (room: Room) => void;
 }
+
+type Room = User[];
 
 interface ClientToServerEvents {
   sendMessage: (
@@ -29,12 +38,20 @@ interface EnterRoomMessage {
   roomNum: string;
 }
 
-export type ComeInToRoomMessage = EnterRoomMessage & { userId: string };
+export type PrivateMessage = Omit<message, "type"> & {
+  type: "PrivateMessage";
+  destination: User;
+  origin: User | undefined;
+};
+
+export type ComeInToRoomMessage = EnterRoomMessage & { id: string };
 
 export interface User {
   username: string;
   id: string;
 }
+
+export type Destination = User | "all";
 
 export type ClientSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 

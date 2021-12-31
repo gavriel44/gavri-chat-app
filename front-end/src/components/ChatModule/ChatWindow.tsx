@@ -5,17 +5,26 @@ import {
   ServerToClientMessage,
   message,
   User,
+  Destination,
+  PrivateMessage,
 } from "../../types";
 import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
 import UsernameContext from "../UsernameContext";
+import ConnectedWindow from "./ConnectedWindow";
 
-export default function ChatWindow(): ReactElement {
+interface Props {
+  url?: string;
+}
+
+export default function ChatWindow({ url }: Props): ReactElement {
   const [messages, setMessages] = useState<ServerToClientMessage[]>([]);
-  const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const { username, room } = useContext(UsernameContext);
+  const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
+  const [messageDestination, setMessageDestination] =
+    useState<Destination>("all");
 
-  const socket = useSocket();
+  const socket = useSocket(url);
 
   useEffect(() => {
     if (typeof socket === "undefined") {
@@ -27,17 +36,6 @@ export default function ChatWindow(): ReactElement {
         throw new Error(" missing or invalid message format");
       }
 
-      if (message.type === "EnterRoomMessage") {
-        setConnectedUsers((prevConnectedUsers) => {
-          const newUser: User = {
-            username: message.username,
-            id: message.userId,
-          };
-          const newConnectedUsers = prevConnectedUsers.concat([newUser]);
-          return newConnectedUsers;
-        });
-      }
-
       setMessages((prevMessages) => {
         const newMessages = prevMessages.concat([message]);
         return newMessages;
@@ -45,6 +43,11 @@ export default function ChatWindow(): ReactElement {
     };
 
     socket.on("receiveMessage", messagesListener);
+    socket.on("updateUsersInRoom", (room) => {
+      console.log("in updated");
+
+      setConnectedUsers(room);
+    });
 
     socket.emit("sendMessage", {
       type: "EnterRoomMessage",
@@ -57,37 +60,72 @@ export default function ChatWindow(): ReactElement {
     if (typeof socket === "undefined") {
       return console.log("waiting on connection");
     }
-    const message: message = {
-      text,
-      username,
-      id: "temp",
-      type: "message",
-    };
+    let message: message | PrivateMessage;
+    if (messageDestination === "all") {
+      message = {
+        text,
+        username,
+        id: "temp",
+        type: "message",
+      };
+    } else {
+      message = {
+        text,
+        username,
+        id: "temp",
+        type: "PrivateMessage",
+        destination: messageDestination,
+        origin: connectedUsers.find((user) => user.username === username),
+      };
+    }
     setMessages((prev) => {
       const newMessages = prev.concat([message]);
       return newMessages;
     });
 
-    socket.emit("sendMessage", message, (newId: string) => {
+    const setStatusCb = (newId: string) => {
       setTimeout(() => {
         console.log("in callback", messages);
         setMessages((prevMessages) => {
-          const newMessage = prevMessages.map((mes) => {
-            if (mes.type === "message" && mes.id === "temp") {
+          const newMessages = prevMessages.map((mes) => {
+            if (
+              mes.type === "message" ||
+              (mes.type === "PrivateMessage" && mes.id === "temp")
+            ) {
               mes.id = newId;
             }
             return mes;
           });
-          return newMessage;
+          return newMessages;
         });
       }, 500);
-    });
+    };
+
+    socket.emit("sendMessage", message, setStatusCb);
+  };
+
+  const handleSendTo = (user: User): void => {
+    setMessageDestination(user);
+  };
+
+  const handleResetDestination = (): void => {
+    setMessageDestination("all");
   };
 
   return (
-    <div className="chat-window">
-      <MessagesBlock messages={messages} />
-      <ChatInput handleSubmit={handleSendMessage} />
+    <div className="chat-module">
+      <div className="chat-window">
+        <MessagesBlock messages={messages} />
+        <ChatInput
+          destination={messageDestination}
+          handleSubmit={handleSendMessage}
+          handleResetDestination={handleResetDestination}
+        />
+      </div>
+      <ConnectedWindow
+        connectedUsers={connectedUsers}
+        handleSendTo={handleSendTo}
+      />
     </div>
   );
 }
