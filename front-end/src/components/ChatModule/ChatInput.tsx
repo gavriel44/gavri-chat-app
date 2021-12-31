@@ -1,7 +1,8 @@
-import { Button, TextField } from "@mui/material";
+import { Button, IconButton, TextField } from "@mui/material";
 import React, { ReactElement, useEffect, useState } from "react";
 import { ClientSocket, Destination, newMessage } from "../../types";
 import SendIcon from "@mui/icons-material/Send";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface Props {
   handleSubmit: (value: string) => void;
@@ -18,22 +19,37 @@ export default function ChatInput({
 
   return (
     <div>
-      {destination === "all" ? null : (
-        <div>
+      {/* {destination === "all" ? null : (
+        <div className="destination-hint">
           Sending message to {destination.username}{" "}
           <Button onClick={() => handleResetDestination()}>Cancel</Button>
         </div>
-      )}
+      )} */}
       <form className="chat-input">
         <TextField
           id="chat-input"
-          label="Outlined"
+          label="Send"
           variant="outlined"
           name="chat-input"
           value={input}
           onChange={(e) => {
             setInput(e.target.value);
           }}
+          helperText={
+            destination !== "all" ? (
+              <div>
+                {`Sending only to ${destination.username}`}
+                <IconButton
+                  // variant="contained"
+                  color="error"
+                  size="small"
+                  onClick={() => handleResetDestination()}
+                >
+                  <CancelIcon />
+                </IconButton>
+              </div>
+            ) : null
+          }
         />
         <Button
           variant="contained"
