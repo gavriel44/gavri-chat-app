@@ -17,14 +17,16 @@ export default function Message({ message }: Props): ReactElement {
         return (
           <div className="my-message">
             <div className="message-author">{userNameInitials}</div>
-            <div className="message-content">
-              <p>
-                <span>{message.text} </span>
+            <div className="content-container">
+              <div className="message-content">
+                <p>
+                  <span>{message.text} </span>
 
-                <span className="message-status">
-                  {message.id === "temp" ? "sending.." : "delivered"}
-                </span>
-              </p>
+                  <span className="message-status">
+                    {message.id === "temp" ? "sending.." : "delivered"}
+                  </span>
+                </p>
+              </div>
             </div>
           </div>
         );
@@ -33,10 +35,12 @@ export default function Message({ message }: Props): ReactElement {
       return (
         <div className="message">
           <div className="message-author">{userNameInitials}</div>
-          <div className="message-content">
-            <p>
-              <span>{message.text} </span>
-            </p>
+          <div className="content-container">
+            <div className="message-content">
+              <p>
+                <span>{message.text} </span>
+              </p>
+            </div>
           </div>
         </div>
       );
@@ -52,15 +56,17 @@ export default function Message({ message }: Props): ReactElement {
         return (
           <div className="my-message">
             <div className="message-author">{userNameInitials}</div>
-            <div className="message-content">
-              <span>{message.text} </span>
+            <div className="content-container">
+              <div className="message-content">
+                <span>{message.text} </span>
 
-              <span className="message-status">
-                {message.id === "temp" ? "sending.." : "delivered"}
-              </span>
-            </div>
-            <div className="destination-label">
-              only {message.destination.username} can see this message
+                <span className="message-status">
+                  {message.id === "temp" ? "sending.." : "delivered"}
+                </span>
+              </div>
+              <div className="destination-label">
+                only {message.destination.username} can see this message
+              </div>
             </div>
           </div>
         );
@@ -69,11 +75,13 @@ export default function Message({ message }: Props): ReactElement {
       return (
         <div className="message">
           <div className="message-author">{userNameInitials}</div>
-          <div className="message-content">
-            <p>
-              <span>{message.text} </span>
-            </p>
-            private message from {message.origin?.username || "unknown"}
+          <div className="content-container">
+            <div className="message-content">
+              <p>
+                <span>{message.text} </span>
+              </p>
+              private message from {message.origin?.username || "unknown"}
+            </div>
           </div>
         </div>
       );
