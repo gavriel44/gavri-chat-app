@@ -4,6 +4,8 @@ WORKDIR /usr/src/app
 
 COPY --chown=node:node . .
 
+COPY --chown=node:node ../front-end/build ./build
+
 RUN npm ci
 
 RUN npm run tsc
