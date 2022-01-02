@@ -2,7 +2,12 @@ import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import { v4 as uuidv4 } from "uuid";
 import rooms from "../db/rooms";
-import { ClientToServerEvents, Message, ServerToClientEvents } from "../types";
+import {
+  ClientToServerEvents,
+  Message,
+  Room,
+  ServerToClientEvents,
+} from "../types";
 
 export default function chatHandler(
   socket: Socket,
@@ -30,6 +35,7 @@ export default function chatHandler(
       case "message":
         try {
           const newId = uuidv4();
+
           const newMessage = {
             ...message,
             id: newId,
@@ -48,6 +54,7 @@ export default function chatHandler(
 
         try {
           const newId = uuidv4();
+
           const newMessage = {
             ...message,
             id: newId,

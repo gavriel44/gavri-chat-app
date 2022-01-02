@@ -31,7 +31,7 @@ interface Rooms {
   [key: string]: Room;
 }
 
-type Room = User[];
+export type Room = User[];
 
 interface User {
   id: string;

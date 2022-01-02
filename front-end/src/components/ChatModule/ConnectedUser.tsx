@@ -1,4 +1,4 @@
-import { Button, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import React, { ReactElement, useContext } from "react";
 import { User } from "../../types";
 import UsernameContext from "../UsernameContext";
