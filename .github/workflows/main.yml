@@ -49,11 +49,14 @@ jobs:
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: heroku container:login
-        
-      - name: connect remote git
-        run: heroku git:remote -a gavri-chat-app
+        run: |
+          heroku container:login,
+          heroku git:remote -a gavri-chat-app
+          git push heroku main
+          
+#       - name: connect remote git
+#         run: heroku git:remote -a gavri-chat-app
       
-      # Runs a set of commands using the runners shell
-      - name: push to heroku
-        run: git push heroku main
+#       # Runs a set of commands using the runners shell
+#       - name: push to heroku
+#         run: git push heroku main
