@@ -62,7 +62,7 @@ export default function ChatInput({
             handleSubmit(input);
           }}
         >
-          Send
+          send
         </Button>
       </form>
     </div>
