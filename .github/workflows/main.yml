@@ -31,16 +31,15 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: go to front and install dependencies
-        run: |
-          cd ./front-end,
-          npm ci
+        working-directory: ./front-end
+        run: npm ci
           
       - name: execute build
-        run: |
-          npm run build,
-          cd ..
+        working-directory: ./front-end
+        run: npm run build,
         
       - name: Commit build
+        working-directory: ./
         run: |
           git config --global user.name 'gavriel44'
           git config --global user.email 'gavriel44@users.noreply.github.com'
