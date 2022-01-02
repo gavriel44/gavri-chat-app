@@ -27,6 +27,10 @@ export default function ChatWindow({ url }: Props): ReactElement {
   const socket = useSocket(url);
 
   useEffect(() => {
+    console.log("messages", JSON.stringify(messages));
+  }, [messages]);
+
+  useEffect(() => {
     if (typeof socket === "undefined") {
       return console.log("trying to connect");
     }
@@ -44,8 +48,6 @@ export default function ChatWindow({ url }: Props): ReactElement {
 
     socket.on("receiveMessage", messagesListener);
     socket.on("updateUsersInRoom", (room) => {
-      console.log("in updated");
-
       setConnectedUsers(room);
     });
 
@@ -79,18 +81,21 @@ export default function ChatWindow({ url }: Props): ReactElement {
       };
     }
     setMessages((prev) => {
+      console.log("in first set", prev);
+      console.log("in first set message", JSON.stringify(message));
+
       const newMessages = prev.concat([message]);
       return newMessages;
     });
 
     const setStatusCb = (newId: string) => {
       setTimeout(() => {
-        console.log("in callback", messages);
         setMessages((prevMessages) => {
+          console.log("in callback", JSON.stringify(prevMessages));
           const newMessages = prevMessages.map((mes) => {
             if (
-              mes.type === "message" ||
-              (mes.type === "PrivateMessage" && mes.id === "temp")
+              (mes.type === "message" || mes.type === "PrivateMessage") &&
+              mes.id === "temp"
             ) {
               mes.id = newId;
             }
