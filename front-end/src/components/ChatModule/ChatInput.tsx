@@ -1,6 +1,6 @@
 import { Button, IconButton, TextField } from "@mui/material";
-import React, { ReactElement, useEffect, useState } from "react";
-import { ClientSocket, Destination, newMessage } from "../../types";
+import { ReactElement, useState } from "react";
+import { Destination } from "../../types";
 import SendIcon from "@mui/icons-material/Send";
 import CancelIcon from "@mui/icons-material/Cancel";
 
