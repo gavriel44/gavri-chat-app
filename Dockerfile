@@ -2,9 +2,9 @@ FROM node:16
 
 WORKDIR /usr/src/app
 
-COPY --chown=node:node . .
+COPY --chown=node:node ./back-end .
 
-COPY --chown=node:node ../front-end/build ./build
+COPY --chown=node:node ./front-end/build ./build
 
 RUN npm ci
 
