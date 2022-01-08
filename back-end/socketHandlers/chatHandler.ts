@@ -1,49 +1,46 @@
 import { Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { v4 as uuidv4 } from "uuid";
 import rooms from "../db/rooms";
-import roomService from "../services/roomService";
-import { ClientToServerEvents, Message, ServerToClientEvents } from "../types";
+import RoomManager from "../services/roomService";
+import { ClientToServerEvents, ISocket, ServerToClientEvents } from "../types";
 
 export default function chatHandler(
-  socket: Socket,
-  io: Server<ClientToServerEvents, ServerToClientEvents, DefaultEventsMap, any>
+  socket: ISocket,
+  io: Server<ClientToServerEvents, ServerToClientEvents>
 ) {
-  let roomName = "1";
+  const myRoomManager = new RoomManager(socket, "1");
 
   socket.on("disconnecting", () => {
     console.log("disconnecting");
-
-    roomService.removeUserFromRoom(roomName, socket.id);
-    // rooms[roomName] = rooms[roomName].filter((user) => user.id !== socket.id);
-    socket.to(roomName).emit("updateUsersInRoom", rooms[roomName]);
+    const roomBeingLeft = myRoomManager.currentRoomName;
+    myRoomManager.removeUserFromRoom();
+    socket.to(roomBeingLeft).emit("updateUsersInRoom", rooms[roomBeingLeft]);
+    // roomService.removeUserFromRoom(roomName, socket.id);
   });
 
-  socket.on("join-room", (username: string, roomToEnter) => {
+  socket.on("join-room", (username, roomToEnter) => {
     socket.join(roomToEnter);
     socket
       .to(roomToEnter)
       .emit("receiveMessage", { type: "EnterRoomMessage", username });
-    roomService.addUserToRoom(roomToEnter, {
-      id: socket.id,
-      username: username,
-    });
-    io.to(roomToEnter).emit(
-      "updateUsersInRoom",
-      roomService.getRoom(roomToEnter)
-    );
+    myRoomManager.addUserToRoom(roomToEnter);
+    io.to(roomToEnter).emit("updateUsersInRoom", myRoomManager.getMyRoom());
   });
 
-  socket.on("sendMessage", (message: Message, cb) => {
+  socket.on("sendMessage", (message, cb) => {
     switch (message.type) {
       case "PublicMessage":
         try {
-          socket.to(roomName).emit("receiveMessage", message);
+          socket
+            .to(myRoomManager.currentRoomName)
+            .emit("receiveMessage", message);
 
           cb();
         } catch (error) {
-          cb(error);
-          console.log(error);
+          if (error instanceof Error) {
+            cb(error);
+            console.log(error);
+          }
         }
         break;
 
@@ -52,13 +49,14 @@ export default function chatHandler(
           io.to(message.destination.id).emit("receiveMessage", message);
           cb();
         } catch (error) {
-          cb(error);
-          console.log(error);
+          if (error instanceof Error) {
+            cb(error);
+            console.log(error);
+          }
         }
         break;
       default:
         assertUnreachable(message);
-        break;
     }
 
     console.log(message);
