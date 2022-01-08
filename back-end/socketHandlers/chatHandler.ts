@@ -36,7 +36,7 @@ export default function chatHandler(
 
   socket.on("sendMessage", (message: Message, cb) => {
     switch (message.type) {
-      case "message":
+      case "PublicMessage":
         try {
           socket.to(roomName).emit("receiveMessage", message);
 
