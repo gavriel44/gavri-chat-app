@@ -15,4 +15,13 @@ export interface PrivateMessage extends BaseMessage {
   destination: User;
 }
 
-export type Message = PrivateMessage | PublicMessage;
+export interface EnterRoomMessage {
+  type: "EnterRoomMessage";
+  username: string;
+}
+
+export type ServerToClientMessages =
+  | PrivateMessage
+  | PublicMessage
+  | EnterRoomMessage;
+export type ClientToServerMessages = PrivateMessage | PublicMessage;

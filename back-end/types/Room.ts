@@ -6,4 +6,4 @@ export interface Rooms {
 
 export type Room = User[];
 
-export type IRoomName = string | number;
+export type IRoomName = string;
