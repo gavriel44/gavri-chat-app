@@ -1,9 +1,9 @@
 import React, { ReactElement } from "react";
-import { ServerToClientMessage } from "../../types";
+import { ReceivableMessage } from "../../types";
 import Message from "./Message";
 
 interface Props {
-  messages: ServerToClientMessage[];
+  messages: ReceivableMessage[];
 }
 
 export default function MessagesBlock({ messages }: Props): ReactElement {

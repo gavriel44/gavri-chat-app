@@ -2,11 +2,10 @@ import { ReactElement, useContext, useEffect, useState } from "react";
 import MessagesBlock from "./MessagesBlock";
 import {
   isMessageFromServer,
-  ServerToClientMessage,
-  message,
+  ReceivableMessage,
   User,
   Destination,
-  PrivateMessage,
+  SendableMessage,
 } from "../../types";
 import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
@@ -19,7 +18,7 @@ interface Props {
 }
 
 export default function ChatWindow({ url }: Props): ReactElement {
-  const [messages, setMessages] = useState<ServerToClientMessage[]>([]);
+  const [messages, setMessages] = useState<ReceivableMessage[]>([]);
   const { username, room } = useContext(UsernameContext);
   const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
   const [messageDestination, setMessageDestination] =
@@ -65,11 +64,11 @@ export default function ChatWindow({ url }: Props): ReactElement {
       id: uuidv4(),
       received: false,
     };
-    let message: PrivateMessage | message;
+    let message: SendableMessage;
     if (messageDestination === "all") {
       message = {
         ...baseMessage,
-        type: "message",
+        type: "PublicMessage",
       };
     } else {
       message = {

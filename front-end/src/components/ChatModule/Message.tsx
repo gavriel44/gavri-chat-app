@@ -1,9 +1,9 @@
 import React, { ReactElement, useContext } from "react";
-import { ServerToClientMessage } from "../../types";
+import { ReceivableMessage } from "../../types";
 import UsernameContext from "../UsernameContext";
 
 interface Props {
-  message: ServerToClientMessage;
+  message: ReceivableMessage;
 }
 
 export default function Message({ message }: Props): ReactElement {
@@ -12,7 +12,7 @@ export default function Message({ message }: Props): ReactElement {
 
   const isMyMessage = username === message.username;
   switch (message.type) {
-    case "message":
+    case "PublicMessage":
       if (isMyMessage) {
         return (
           <div className="my-message">
