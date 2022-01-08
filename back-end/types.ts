@@ -4,10 +4,10 @@ interface ServerToClientEvents {
 }
 
 interface ClientToServerEvents {
-  sendMessage: (message: Message, cb?: (newId: string) => void) => void;
+  sendMessage: (message: Message, cb: (error: Error) => void) => void;
 }
 
-export type Message = message | EnterRoomMessage | PrivateMessage;
+export type Message = message | PrivateMessage;
 
 type PrivateMessage = Omit<message, "type"> & {
   type: "PrivateMessage";
@@ -21,11 +21,7 @@ interface message {
   type: "message";
 }
 
-interface EnterRoomMessage {
-  username: string;
-  roomNum: Number;
-  type: "EnterRoomMessage";
-}
+export type IRoomName = string | number;
 
 interface Rooms {
   [key: string]: Room;
@@ -33,7 +29,7 @@ interface Rooms {
 
 export type Room = User[];
 
-interface User {
+export interface User {
   id: string;
   username: string;
 }

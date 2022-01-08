@@ -37,7 +37,7 @@ export default function ChatInput({
           }}
           helperText={
             destination !== "all" ? (
-              <div>
+              <>
                 {`Sending only to ${destination.username}`}
                 <IconButton
                   // variant="contained"
@@ -47,7 +47,7 @@ export default function ChatInput({
                 >
                   <CancelIcon />
                 </IconButton>
-              </div>
+              </>
             ) : null
           }
         />

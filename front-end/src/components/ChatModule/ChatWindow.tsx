@@ -12,6 +12,7 @@ import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
 import UsernameContext from "../UsernameContext";
 import ConnectedWindow from "./ConnectedWindow";
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   url?: string;
@@ -51,53 +52,54 @@ export default function ChatWindow({ url }: Props): ReactElement {
       setConnectedUsers(room);
     });
 
-    socket.emit("sendMessage", {
-      type: "EnterRoomMessage",
-      username,
-      roomNum: room,
-    });
+    socket.emit("join-room", username, room);
   }, [socket, room, username]);
 
   const handleSendMessage = (text: string): void => {
     if (typeof socket === "undefined") {
       return console.log("waiting on connection");
     }
-    let message: message | PrivateMessage;
+    const baseMessage = {
+      text,
+      username,
+      id: uuidv4(),
+      received: false,
+    };
+    let message: PrivateMessage | message;
     if (messageDestination === "all") {
       message = {
-        text,
-        username,
-        id: "temp",
+        ...baseMessage,
         type: "message",
       };
     } else {
       message = {
-        text,
-        username,
-        id: "temp",
+        ...baseMessage,
         type: "PrivateMessage",
         destination: messageDestination,
         origin: connectedUsers.find((user) => user.username === username),
       };
     }
-    setMessages((prev) => {
-      console.log("in first set", prev);
-      console.log("in first set message", JSON.stringify(message));
+    setMessages((prevMessages) => {
+      // console.log("in first set", prev);
+      // console.log("in first set message", JSON.stringify(message));
 
-      const newMessages = prev.concat([message]);
+      const newMessages = prevMessages.concat([message]);
       return newMessages;
     });
 
-    const setStatusCb = (newId: string) => {
+    const receivedCb = (error: Error) => {
+      if (error) {
+        console.log("error: ", error.message);
+        return alert("error sending message");
+      }
       setTimeout(() => {
         setMessages((prevMessages) => {
-          console.log("in callback", JSON.stringify(prevMessages));
           const newMessages = prevMessages.map((mes) => {
-            if (
-              (mes.type === "message" || mes.type === "PrivateMessage") &&
-              mes.id === "temp"
-            ) {
-              mes.id = newId;
+            if (mes.type !== "EnterRoomMessage" && mes.id === message.id) {
+              return {
+                ...mes,
+                received: true,
+              };
             }
             return mes;
           });
@@ -106,7 +108,7 @@ export default function ChatWindow({ url }: Props): ReactElement {
       }, 500);
     };
 
-    socket.emit("sendMessage", message, setStatusCb);
+    socket.emit("sendMessage", message, receivedCb);
   };
 
   const handleSendTo = (user: User): void => {

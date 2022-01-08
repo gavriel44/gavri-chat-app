@@ -13,7 +13,11 @@ export default function MessagesBlock({ messages }: Props): ReactElement {
         return (
           <Message
             message={message}
-            key={message.type === "message" ? message.id : message.username}
+            key={
+              message.type !== "EnterRoomMessage"
+                ? message.id
+                : message.username
+            }
           />
         );
       })}
