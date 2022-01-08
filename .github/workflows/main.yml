@@ -38,22 +38,28 @@ jobs:
         working-directory: ./front-end
         run: npm run build
         
-      - name: Commit build
-        working-directory: ./
-        run: |
-          git config --global user.name 'gavriel44'
-          git config --global user.email 'gavriel44@users.noreply.github.com'
-          git commit -am "Automated build"
-          git push
+#       - name: Commit build
+#         working-directory: ./
+#         run: |
+#           git config --global user.name 'gavriel44'
+#           git config --global user.email 'gavriel44@users.noreply.github.com'
+#           git commit -am "Automated build"
+#           git push
       
       - name: Login to Heroku Container registry
+        working-directory: ./
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-        run: |
-          heroku container:login
-          heroku git:remote -a gavri-chat-app
-          git push heroku main
-          
+        run: heroku container:login 
+      - name: Build and push
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:push -a gavri-chat-app web 
+      - name: Release
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        run: heroku container:release -a gavri-chat-app web 
+
 #       - name: connect remote git
 #         run: heroku git:remote -a gavri-chat-app
       
