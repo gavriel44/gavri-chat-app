@@ -1,5 +1,4 @@
 import { Server, Socket } from "socket.io";
-import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import rooms from "../db/rooms";
 import RoomManager from "../services/roomService";
 import { ClientToServerEvents, ISocket, ServerToClientEvents } from "../types";
@@ -23,6 +22,7 @@ export default function chatHandler(
     socket
       .to(roomToEnter)
       .emit("receiveMessage", { type: "EnterRoomMessage", username });
+    myRoomManager.userName = username;
     myRoomManager.addUserToRoom(roomToEnter);
     io.to(roomToEnter).emit("updateUsersInRoom", myRoomManager.getMyRoom());
   });

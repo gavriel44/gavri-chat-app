@@ -27,8 +27,8 @@ export default function ChatWindow({ url }: Props): ReactElement {
   const socket = useSocket(url);
 
   useEffect(() => {
-    console.log("messages", JSON.stringify(messages));
-  }, [messages]);
+    console.log("connectedUsers", connectedUsers);
+  }, [connectedUsers]);
 
   useEffect(() => {
     if (typeof socket === "undefined") {

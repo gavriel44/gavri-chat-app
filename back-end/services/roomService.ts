@@ -13,7 +13,7 @@ export default class RoomManager {
   }
 
   getMyRoom(): Room {
-    return rooms[this.currentRoomName];
+    return rooms[this._currentRoomName];
   }
 
   set userName(userName: string) {

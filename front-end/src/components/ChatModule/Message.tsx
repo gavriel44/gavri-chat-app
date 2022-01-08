@@ -61,7 +61,7 @@ export default function Message({ message }: Props): ReactElement {
                 <span>{message.text} </span>
 
                 <span className="message-status">
-                  {message.id === "temp" ? "sending.." : "delivered"}
+                  {message.received === false ? "sending.." : "delivered"}
                 </span>
               </div>
               <div className="destination-label">
