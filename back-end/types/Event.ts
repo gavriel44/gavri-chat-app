@@ -1,4 +1,5 @@
-import { ClientToServerMessages, ServerToClientMessages } from "./Message";
+/* eslint-disable no-unused-vars */
+import { ServerToClientMessages } from "./Message";
 import { Room } from "./Room";
 
 export interface ServerToClientEvents {
@@ -7,9 +8,6 @@ export interface ServerToClientEvents {
 }
 
 export interface ClientToServerEvents {
-  sendMessage: (
-    message: ClientToServerMessages,
-    cb: (error?: Error | null) => void
-  ) => void;
+  sendMessage: (message: unknown, cb: (error?: Error | null) => void) => void;
   "join-room": (username: string, roomName: string) => void;
 }

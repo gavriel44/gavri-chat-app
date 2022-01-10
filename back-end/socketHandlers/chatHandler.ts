@@ -2,11 +2,13 @@ import rooms from "../db/rooms";
 import RoomManager from "../services/roomService";
 import { IIo, ISocket } from "../types";
 import assertUnreachable from "../utils/help";
+import toNewMessage from "../utils/toNewMessage";
 
 export default function chatHandler(socket: ISocket, io: IIo) {
   const myRoomManager = new RoomManager(socket, "1");
 
   socket.on("disconnecting", () => {
+    // eslint-disable-next-line no-console
     console.log("disconnecting");
     const roomBeingLeft = myRoomManager.currentRoomName;
     myRoomManager.removeUserFromRoom();
@@ -24,37 +26,34 @@ export default function chatHandler(socket: ISocket, io: IIo) {
   });
 
   socket.on("sendMessage", (message, cb) => {
-    switch (message.type) {
+    const newMessage = toNewMessage(message);
+    switch (newMessage.type) {
       case "PublicMessage":
         try {
           socket
             .to(myRoomManager.currentRoomName)
-            .emit("receiveMessage", message);
+            .emit("receiveMessage", newMessage);
 
           cb();
         } catch (error) {
           if (error instanceof Error) {
             cb(error);
-            console.log(error);
           }
         }
         break;
 
       case "PrivateMessage":
         try {
-          io.to(message.destination.id).emit("receiveMessage", message);
+          io.to(newMessage.destination.id).emit("receiveMessage", newMessage);
           cb();
         } catch (error) {
           if (error instanceof Error) {
             cb(error);
-            console.log(error);
           }
         }
         break;
       default:
-        assertUnreachable(message);
+        assertUnreachable(newMessage);
     }
-
-    console.log(message);
   });
 }

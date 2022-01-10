@@ -20,6 +20,8 @@ export interface EnterRoomMessage {
   username: string;
 }
 
+export type CToSMessagesTypes = "PrivateMessage" | "PublicMessage";
+
 export type ServerToClientMessages =
   | PrivateMessage
   | PublicMessage
