@@ -1,12 +1,9 @@
-import { Server, Socket } from "socket.io";
 import rooms from "../db/rooms";
 import RoomManager from "../services/roomService";
-import { ClientToServerEvents, ISocket, ServerToClientEvents } from "../types";
+import { IIo, ISocket } from "../types";
+import assertUnreachable from "../utils/help";
 
-export default function chatHandler(
-  socket: ISocket,
-  io: Server<ClientToServerEvents, ServerToClientEvents>
-) {
+export default function chatHandler(socket: ISocket, io: IIo) {
   const myRoomManager = new RoomManager(socket, "1");
 
   socket.on("disconnecting", () => {
@@ -14,7 +11,6 @@ export default function chatHandler(
     const roomBeingLeft = myRoomManager.currentRoomName;
     myRoomManager.removeUserFromRoom();
     socket.to(roomBeingLeft).emit("updateUsersInRoom", rooms[roomBeingLeft]);
-    // roomService.removeUserFromRoom(roomName, socket.id);
   });
 
   socket.on("join-room", (username, roomToEnter) => {
@@ -61,8 +57,4 @@ export default function chatHandler(
 
     console.log(message);
   });
-}
-
-function assertUnreachable(x: never): never {
-  throw new Error("Didn't expect to get here");
 }

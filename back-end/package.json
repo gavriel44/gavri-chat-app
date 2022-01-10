@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./back-build/index",
     "dev": "ts-node-dev index.ts",
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +23,11 @@
     "@types/node": "^17.0.5",
     "@types/socket.io": "^3.0.2",
     "@types/uuid": "^8.3.3",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.4",
     "nodemon": "^2.0.15",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",

@@ -3,7 +3,9 @@ import { Room, ISocket } from "../types";
 
 export default class RoomManager {
   _socket: ISocket;
+
   _currentRoomName: string;
+
   _userName: string;
 
   constructor(socket: ISocket, initialRoomName: string, userName = "") {
@@ -13,7 +15,7 @@ export default class RoomManager {
   }
 
   getMyRoom(): Room {
-    return rooms[this._currentRoomName];
+    return rooms[this.currentRoomName];
   }
 
   set userName(userName: string) {
@@ -38,28 +40,3 @@ export default class RoomManager {
     );
   }
 }
-
-// let myCurrentRoomName: IRoomName = "1";
-
-// function getRoom(roomName: IRoomName): Room {
-//   return rooms[roomName];
-// }
-
-// function getMyRoom(): IRoomName {
-//   return myCurrentRoomName;
-// }
-
-// function addUserToRoom(roomName: IRoomName, user: User): void {
-//   myCurrentRoomName = roomName;
-//   rooms[roomName].push(user);
-// }
-
-// function removeUserFromRoom(roomName: IRoomName, userId: string): void {
-//   rooms[roomName] = rooms[roomName].filter((user) => user.id !== userId);
-// }
-
-// const roomService = {
-//   getRoom,
-//   addUserToRoom,
-//   removeUserFromRoom,
-// };
