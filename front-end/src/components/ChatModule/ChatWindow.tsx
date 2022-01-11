@@ -1,19 +1,12 @@
 import { ReactElement, useEffect } from "react";
 import MessagesBlock from "./MessagesBlock";
-import {
-  isMessageFromServer,
-  ReceivableMessage,
-  SendableMessage,
-} from "../../types";
+import { isMessageFromServer, ReceivableMessage } from "../../types";
 import ChatInput from "./ChatInput";
 import useSocket from "../../hooks/useSocket";
 import ConnectedWindow from "./ConnectedWindow";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { addMessage, updateMessageStatus } from "../../features/messagesSlice";
-import {
-  selectConnectedUsers,
-  setConnectedUsers,
-} from "../../features/connectedUsersSlice";
+import { addMessage } from "../../features/messagesSlice";
+import { setConnectedUsers } from "../../features/connectedUsersSlice";
 import { selectChatContext } from "../../features/chatContextSlice";
 
 interface Props {
