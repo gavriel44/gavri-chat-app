@@ -17,7 +17,7 @@ export const messagesSlice = createSlice({
       state,
       action: PayloadAction<ReceivableMessage | ReceivableMessage[]>
     ) => {
-      state.concat(action.payload);
+      return state.concat(action.payload);
     },
     updateMessageStatus: (
       state,

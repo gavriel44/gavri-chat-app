@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { User } from "../types";
+import { Room } from "../types";
 
 // Define a type for the slice state
-type ConnectedUsersState = User[];
+type ConnectedUsersState = Room;
 
 // Define the initial state using that type
 const initialState: ConnectedUsersState = [];
@@ -14,7 +14,7 @@ export const connectedUsersSlice = createSlice({
   initialState,
   reducers: {
     setConnectedUsers: (state, action: PayloadAction<ConnectedUsersState>) => {
-      state = action.payload;
+      return [...action.payload];
     },
   },
 });
@@ -22,6 +22,6 @@ export const connectedUsersSlice = createSlice({
 export const { setConnectedUsers } = connectedUsersSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectMessages = (state: RootState) => state.connectedUsers;
+export const selectConnectedUsers = (state: RootState) => state.connectedUsers;
 
 export default connectedUsersSlice.reducer;

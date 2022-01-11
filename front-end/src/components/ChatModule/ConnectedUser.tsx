@@ -1,18 +1,23 @@
 import { IconButton } from "@mui/material";
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import { User } from "../../types";
-import UsernameContext from "../UsernameContext";
 import ChatIcon from "@mui/icons-material/Chat";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  selectChatContext,
+  updateDestination,
+} from "../../features/chatContextSlice";
 interface Props {
   user: User;
-  handleClick: () => void;
 }
 
-export default function ConnectedUser({
-  user,
-  handleClick,
-}: Props): ReactElement {
-  const { username } = useContext(UsernameContext);
+export default function ConnectedUser({ user }: Props): ReactElement {
+  const dispatch = useAppDispatch();
+  const { username } = useAppSelector(selectChatContext);
+
+  const handleClick = () => {
+    dispatch(updateDestination(user));
+  };
   return (
     <div className="connected-user">
       <span className="connected-user-name">{user.username}</span>

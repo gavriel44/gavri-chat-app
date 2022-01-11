@@ -1,13 +1,14 @@
-import React, { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
+import { selectChatContext } from "../../features/chatContextSlice";
+import { useAppSelector } from "../../hooks/redux";
 import { ReceivableMessage } from "../../types";
-import UsernameContext from "../UsernameContext";
 
 interface Props {
   message: ReceivableMessage;
 }
 
 export default function Message({ message }: Props): ReactElement {
-  const { username } = useContext(UsernameContext);
+  const { username } = useAppSelector(selectChatContext);
   const userNameInitials = message.username.slice(0, 2).toLocaleUpperCase();
 
   const isMyMessage = username === message.username;
@@ -80,7 +81,7 @@ export default function Message({ message }: Props): ReactElement {
               <p>
                 <span>{message.text} </span>
               </p>
-              private message from {message.origin?.username || "unknown"}
+              private message from {message.origin.username || "unknown"}
             </div>
           </div>
         </div>
