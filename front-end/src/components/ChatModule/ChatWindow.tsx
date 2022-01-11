@@ -12,23 +12,22 @@ import useSocket from "../../hooks/useSocket";
 import UsernameContext from "../UsernameContext";
 import ConnectedWindow from "./ConnectedWindow";
 import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch } from "../../hooks/redux";
 
 interface Props {
   url?: string;
 }
 
 export default function ChatWindow({ url }: Props): ReactElement {
-  const [messages, setMessages] = useState<ReceivableMessage[]>([]);
-  const { username, room } = useContext(UsernameContext);
-  const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
-  const [messageDestination, setMessageDestination] =
-    useState<Destination>("all");
+  // const [messages, setMessages] = useState<ReceivableMessage[]>([]);
+  // const { username, room } = useContext(UsernameContext);
+  // const [connectedUsers, setConnectedUsers] = useState<User[]>([]);
+  // const [messageDestination, setMessageDestination] =
+  //   useState<Destination>("all");
 
   const socket = useSocket(url);
-
-  useEffect(() => {
-    console.log("connectedUsers", connectedUsers);
-  }, [connectedUsers]);
+  // const count = useAppSelector((state) => state.counter.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (typeof socket === "undefined") {
