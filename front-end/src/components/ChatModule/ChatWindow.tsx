@@ -35,13 +35,13 @@ export default function ChatWindow({ url }: Props): ReactElement {
       return console.log("trying to connect");
     }
 
-    const messagesListener = (message: unknown): void => {
+    const messagesListener = (message: ReceivableMessage): void => {
       if (!isMessageFromServer(message)) {
         throw new Error(" missing or invalid message format");
       }
 
       setMessages((prevMessages) => {
-        const newMessages = prevMessages.concat([message]);
+        const newMessages = prevMessages.concat(message);
         return newMessages;
       });
     };
@@ -82,7 +82,7 @@ export default function ChatWindow({ url }: Props): ReactElement {
       // console.log("in first set", prev);
       // console.log("in first set message", JSON.stringify(message));
 
-      const newMessages = prevMessages.concat([message]);
+      const newMessages = prevMessages.concat(message);
       return newMessages;
     });
 
