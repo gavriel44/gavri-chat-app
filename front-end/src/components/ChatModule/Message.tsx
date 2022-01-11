@@ -2,6 +2,8 @@ import { ReactElement } from "react";
 import { selectChatContext } from "../../features/chatContextSlice";
 import { useAppSelector } from "../../hooks/redux";
 import { ReceivableMessage } from "../../types";
+import CheckIcon from "@mui/icons-material/Check";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 interface Props {
   message: ReceivableMessage;
@@ -18,15 +20,15 @@ export default function Message({ message }: Props): ReactElement {
         return (
           <div className="my-message">
             <div className="message-author">{userNameInitials}</div>
-            <div className="content-container">
-              <div className="message-content">
-                <p>
-                  <span>{message.text} </span>
 
-                  <span className="message-status">
-                    {message.received === false ? "sending.." : "delivered"}
-                  </span>
-                </p>
+            <div className="my-message-content">
+              <div>{message.text}</div>
+              <div>
+                {message.received === false ? (
+                  <CheckIcon fontSize="small" />
+                ) : (
+                  <DoneAllIcon fontSize="small" />
+                )}
               </div>
             </div>
           </div>
@@ -34,15 +36,20 @@ export default function Message({ message }: Props): ReactElement {
       }
 
       return (
+        // <div className="message">
+        //   <div className="message-author">{userNameInitials}</div>
+        //   <div className="content-container">
+        //     <div className="message-content">
+        //       <p>
+        //         <span>{message.text} </span>
+        //       </p>
+        //     </div>
+        //   </div>
+        // </div>
         <div className="message">
           <div className="message-author">{userNameInitials}</div>
-          <div className="content-container">
-            <div className="message-content">
-              <p>
-                <span>{message.text} </span>
-              </p>
-            </div>
-          </div>
+
+          <div className="message-content">{message.text}</div>
         </div>
       );
     case "EnterRoomMessage":
@@ -81,7 +88,7 @@ export default function Message({ message }: Props): ReactElement {
               <p>
                 <span>{message.text} </span>
               </p>
-              private message from {message.origin.username || "unknown"}
+              private message from {message.username || "unknown"}
             </div>
           </div>
         </div>

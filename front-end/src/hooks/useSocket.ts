@@ -4,15 +4,12 @@ import { ClientSocket } from "../types";
 
 const useSocket = (url?: string): ClientSocket | undefined => {
   const [socket, setSocket] = useState<ClientSocket>();
-  // const dispatch = useAppDispatch();
-  // const socket = useAppSelector((state) => state.chatContext.socket);
 
   useEffect(() => {
     const newSocket: ClientSocket = url ? io(url) : io();
     newSocket.on("connect", () => {
       console.log("connected to socket");
       setSocket(newSocket);
-      // dispatch(setSocket(newSocket));
     });
 
     return () => {

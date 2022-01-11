@@ -10,7 +10,6 @@ interface BaseMessage {
 export interface PrivateMessage extends BaseMessage {
   type: "PrivateMessage";
   destination: User;
-  origin: User;
 }
 
 export interface PublicMessage extends BaseMessage {
