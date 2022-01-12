@@ -5,9 +5,7 @@ import { selectChatContext } from "../../features/chatContextSlice";
 import { IconButton } from "@mui/material";
 import moment from "moment";
 
-interface Props {}
-
-export default function MessageBlockHeader({}: Props): ReactElement {
+export default function MessageBlockHeader(): ReactElement {
   const { room } = useAppSelector(selectChatContext);
   return (
     <div>

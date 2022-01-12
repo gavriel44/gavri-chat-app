@@ -1,21 +1,10 @@
-import {
-  Button,
-  ButtonProps,
-  IconButton,
-  styled,
-  TextField,
-} from "@mui/material";
+import { Button, ButtonProps, styled } from "@mui/material";
 import React, { ReactElement, useState } from "react";
 import SendIcon from "@mui/icons-material/Send";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import {
-  selectChatContext,
-  updateDestination,
-} from "../../features/chatContextSlice";
+import { selectChatContext } from "../../features/chatContextSlice";
 import { ClientSocket, SendableMessage } from "../../types";
 import { v4 as uuidv4 } from "uuid";
-import { selectConnectedUsers } from "../../features/connectedUsersSlice";
 import { addMessage, updateMessageStatus } from "../../features/messagesSlice";
 import { blue, purple } from "@mui/material/colors";
 
@@ -29,9 +18,9 @@ export default function ChatInput({ socket }: Props): ReactElement {
   const { destination: messageDestination, username } =
     useAppSelector(selectChatContext);
 
-  const handleResetDestination = () => {
-    dispatch(updateDestination("all"));
-  };
+  // const handleResetDestination = () => {
+  //   dispatch(updateDestination("all"));
+  // };
 
   const handleSendMessageClick = (e: React.FormEvent<EventTarget>): void => {
     e.preventDefault();
