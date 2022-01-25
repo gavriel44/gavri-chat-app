@@ -1,10 +1,11 @@
-import config from "./utils/config";
-import app from "./app";
 import { createServer } from "http";
-const server = createServer(app);
 import { Server, Socket } from "socket.io";
+import config from "./utils/config";
 import { ClientToServerEvents, ServerToClientEvents } from "./types";
 import chatHandler from "./socketHandlers/chatHandler";
+import app from "./app";
+
+const server = createServer(app);
 
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server);
 
@@ -15,5 +16,5 @@ const onConnection = (socket: Socket) => {
 io.on("connection", onConnection);
 
 server.listen(config.PORT, () => {
-  `server listening on port ${config.PORT}`;
+  console.log(`server listening on port ${config.PORT}`);
 });

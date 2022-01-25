@@ -72,33 +72,16 @@ export default function ChatInput({ socket }: Props): ReactElement {
 
   return (
     <div>
-      <form className="chat-input">
+      <form className="chat-input" autoComplete="off">
         <div className="test-chat-input">
           <input
             id="chat-input"
-            // label="Send"
-            // variant="outlined"
             placeholder="Add your message"
             name="chat-input"
             value={input}
             onChange={(e) => {
               setInput(e.target.value);
             }}
-            // helperText={
-            //   messageDestination !== "all" ? (
-            //     <>
-            //       {`Sending only to ${messageDestination.username}`}
-            //       <IconButton
-            //         // variant="contained"
-            //         color="error"
-            //         size="small"
-            //         onClick={() => handleResetDestination()}
-            //       >
-            //         <CancelIcon />
-            //       </IconButton>
-            //     </>
-            //   ) : null
-            // }
           />
           <ColorButton
             className="send-button"

@@ -25,7 +25,6 @@ export default function toNewMessage(object: any): ClientToServerMessages {
         ...newBaseMessage,
         type: messageType,
         destination: parseDestination(object.destination),
-        origin: parseDestination(object.origin),
       };
       break;
     default:
